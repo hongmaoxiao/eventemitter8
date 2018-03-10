@@ -1,8 +1,9 @@
-function EventEmitter() {};
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
 
-const pro = EventEmitter.prototype;
+  on(type, fn) {
 
-// on function
-pro.on = function (argument) {
-
+  }
 }
