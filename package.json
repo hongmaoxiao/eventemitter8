@@ -1,0 +1,9 @@
+{
+  "name": "eventemitter8",
+  "version": "1.0.0",
+  "description": "eventemitter8",
+  "main": "index.js",
+  "repository": "git@github.com:hongmaoxiao/EventEmitter.git",
+  "author": "buaaxhm@gmail.com",
+  "license": "MIT"
+}
