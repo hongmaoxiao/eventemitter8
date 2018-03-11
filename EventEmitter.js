@@ -128,6 +128,7 @@ class EventEmitter {
   listeners(type) {
     if (isNullOrUndefined(this._events)) return [];
 
+    const events = this._events[type];
     // use `map` because we need to return a new array
     return isNullOrUndefined(events) ? [] : (typeof events === 'function' ? [events] : events.map(o => o));
   }
