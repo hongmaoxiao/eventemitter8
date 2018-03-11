@@ -57,21 +57,56 @@ class EventEmitter {
       throw new Error('emit must receive at lease one argument');
     }
 
-    const event = this._events[type];
-    if (isNullOrUndefined(event)) {
+    const events = this._events[type];
+    if (isNullOrUndefined(events)) {
       throw new Error('emit function must not be null or undefined');
     }
 
-    if (typeof event === 'function') {
-      event.call(event.context || null, rest);
-      if (event.once) {
+    if (typeof events === 'function') {
+      events.call(events.context || null, rest);
+      if (events.once) {
         // TODO: remove this event
       }
-    } else if (isArray(event)) {
-      event.map(e => e.call(e.context || null, rest));
+    } else if (isArray(events)) {
+      events.map(e => e.call(e.context || null, rest));
     }
 
     return true;
+  }
+
+  removeListener(type, fn) {
+    // if type is undefined or null, nothing to do, just return this
+    if (isNullOrUndefined(type)) {
+      return this;
+    }
+
+    if (typeof fn !== 'function') {
+      throw new Error('fn must be a function');
+    }
+
+    const events = this._events[type];
+
+    if (typeof events === 'function') {
+      events === fn && delete this._events[type];
+    } else {
+      const findIndex = events.findIndex(e => e === fn);
+
+      if (findIndex === -1) return this;
+
+      // match the first one, shift faster than splice
+      if (findIndex === 0) {
+        events.shift();
+      } else {
+        events.splice(findIndex, 1);
+      }
+
+      // just left one listener, change Array to Function
+      if (events.length === 1) {
+        this._events[type] = events[0];
+      }
+    }
+
+    return this;
   }
 }
 
