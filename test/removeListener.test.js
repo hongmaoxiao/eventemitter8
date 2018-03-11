@@ -1,8 +1,5 @@
 import EE from '../EventEmitter';
 
-const isArray = (obj) => Array.isArray ? Array.isArray(obj) : Object.prototype.toString.call(obj) ===
-  '[object Array]';
-
 describe('EventEmitter removeListener', () => {
   test('should return this when no type is provide', () => {
     const ee = new EE();
@@ -29,8 +26,9 @@ describe('EventEmitter removeListener', () => {
 
     ee.on('foo', fn);
 
+    expect(ee.listenerCount('foo')).toBe(1);
     ee.removeListener('foo', fn);
-    expect(ee._events['foo']).toBeUndefined();
+    expect(ee.listenerCount('foo')).toBe(0);
   });
 
   test('removeListener when left just one event', () => {
@@ -44,12 +42,8 @@ describe('EventEmitter removeListener', () => {
 
     ee.removeListener('foo', fn1);
 
-    const leftEvent = ee._events['foo'];
-    const leftEventType = typeof leftEvent;
-
-    expect(leftEventType).toBe('function');
-
-    expect(leftEvent).toEqual(fn2);
+    expect(ee.listenerCount('foo')).toBe(1);
+    expect(ee.listeners('foo')).toEqual([fn2]);
   });
 
   test('removeListener when more than two events', () => {
@@ -69,13 +63,11 @@ describe('EventEmitter removeListener', () => {
 
     ee.removeListener('foo', fn3);
 
-    const leftEvent = ee._events['foo'];
+    expect(ee.listeners('foo')).toBeInstanceOf(Array);
 
-    expect(isArray(leftEvent)).toBeTruthy();
+    expect(ee.listenerCount('foo')).toBe(4);
 
-    expect(leftEvent.length).toBe(4);
-
-    expect(leftEvent).toEqual([fn1, fn2, fn4, fn5]);
+    expect(ee.listeners('foo')).toEqual([fn1, fn2, fn4, fn5]);
   });
 });
 
