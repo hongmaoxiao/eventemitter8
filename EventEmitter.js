@@ -75,10 +75,10 @@ class EventEmitter {
   }
 
   removeListener(type, fn) {
+    if (isNullOrUndefined(this._events)) return this;
+
     // if type is undefined or null, nothing to do, just return this
-    if (isNullOrUndefined(type)) {
-      return this;
-    }
+    if (isNullOrUndefined(type)) return this;
 
     if (typeof fn !== 'function') {
       throw new Error('fn must be a function');
@@ -107,6 +107,40 @@ class EventEmitter {
     }
 
     return this;
+  }
+
+  removeAllListeners(type) {
+    if (isNullOrUndefined(this._events)) return this;
+
+    // if not provide type, remove all
+    if (isNullOrUndefined(type)) this._events = Object.create(null);
+
+    const events = this._events[type];
+    if (!isNullOrUndefined(events)) {
+      // check if `type` is the last one
+      if (Object.keys(this._events).length === 1) {
+        this._events = Object.create(null);
+      } else {
+        delete events[type];
+      }
+    }
+
+    return this;
+  }
+
+  listeners(type) {
+    if (isNullOrUndefined(this._events)) return [];
+
+    // use `map` because we need to return a new array
+    return isNullOrUndefined(events) ? [] : (typeof events === 'function' ? [events] : events.map(o => o));
+  }
+
+  listenerCount(type) {
+    if (isNullOrUndefined(this._events)) return 0;
+
+    const events = this._events[type];
+
+    return isNullOrUndefined(events) ? 0 : (typeof events === 'function' ? 1 : events.length);
   }
 }
 
