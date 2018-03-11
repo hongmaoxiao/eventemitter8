@@ -58,17 +58,21 @@ class EventEmitter {
     }
 
     const events = this._events[type];
-    if (isNullOrUndefined(events)) {
-      return false;
-    }
+
+    if (isNullOrUndefined(events)) return false;
 
     if (typeof events === 'function') {
       events.call(events.context || null, rest);
       if (events.once) {
-        // TODO: remove this event
+        this.removeListener(type, events);
       }
     } else if (isArray(events)) {
-      events.map(e => e.call(e.context || null, rest));
+      events.map(e => {
+        e.call(e.context || null, rest);
+        if (e.once) {
+          this.removeListener(type, e);
+        }
+      });
     }
 
     return true;
@@ -143,7 +147,6 @@ class EventEmitter {
     return isNullOrUndefined(events) ? 0 : (typeof events === 'function' ? 1 : events.length);
   }
 }
-
 
 export default EventEmitter;
 
