@@ -118,7 +118,7 @@ class EventEmitter {
       if (Object.keys(this._events).length === 1) {
         this._events = Object.create(null);
       } else {
-        delete events[type];
+        delete this._events[type];
       }
     }
 
