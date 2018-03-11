@@ -140,6 +140,12 @@ class EventEmitter {
 
     return isNullOrUndefined(events) ? 0 : (typeof events === 'function' ? 1 : events.length);
   }
+
+  eventNames() {
+    if (isNullOrUndefined(this._events)) return [];
+
+    return Object.keys(this._events);
+  }
 }
 
 export default EventEmitter;
