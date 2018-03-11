@@ -3,13 +3,6 @@ const isType = obj => toString.call(obj).slice(8, -1).toLowerCase();
 const isArray = obj => Array.isArray(obj) || isType(obj) === 'array';
 const isNullOrUndefined = obj => obj === null || obj === undefined;
 
-const errorHanler = (value, message) => {
-  this.value = value;
-  this.message = message;
-
-  this.toString = () => `${this.value}${this.message}`;
-};
-
 const _addListener = function(type, fn, context, once) {
   if (typeof fn !== 'function') {
     throw new TypeError('fn must be a function');
