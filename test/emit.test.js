@@ -5,9 +5,11 @@ describe('EventEmitter emit', () => {
     expect(() => new EE().emit()).toThrowError('emit must receive at lease one argument');
   });
 
-  test('should throw error when there are no events to emit', () => {
-    expect(() => new EE().emit('foo')).toThrowError('emit function must not be null or undefined');
-    expect(() => new EE().emit('bar')).toThrowError('emit function must not be null or undefined');
+  test('should return false when there are no events to emit', () => {
+    const ee = new EE();
+
+    expect(ee.emit('foo')).toBeFalsy();
+    expect(ee.emit('bar')).toBeFalsy();
   });
 
   test('should return true when there are events to emit', (done) => {

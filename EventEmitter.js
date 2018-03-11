@@ -59,7 +59,7 @@ class EventEmitter {
 
     const events = this._events[type];
     if (isNullOrUndefined(events)) {
-      throw new Error('emit function must not be null or undefined');
+      return false;
     }
 
     if (typeof events === 'function') {
