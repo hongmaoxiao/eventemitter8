@@ -1,7 +1,4 @@
 import EE from '../EventEmitter';
-const fn1 = () => 1;
-
-const fn2 = () => 2;
 
 describe('EventEmitter emit', () => {
   test('shold throw error when event is not a function', () => {
@@ -20,16 +17,18 @@ describe('EventEmitter emit', () => {
 
   test('on one or more events', () => {
     const ee = new EE();
-    const type = 'test';
 
-    ee.on(type, fn1);
-    expect(ee._events[type]).toEqual(fn1);
+    const fn1 = () => 1;
+    const fn2 = () => 2;
 
-    ee.on(type, fn2);
-    expect(ee._events[type]).toEqual([fn1, fn2]);
+    ee.on('foo', fn1);
+    expect(ee.listeners('foo')).toEqual([fn1]);
 
-    ee._events = Object.create(null);
-    expect(ee._events[type]).toBeUndefined();
+    ee.on('foo', fn2);
+    expect(ee.listeners('foo')).toEqual([fn1, fn2]);
+
+    ee.removeAllListeners('foo');
+    expect(ee.listeners('foo')).toEqual([]);
   });
 });
 
