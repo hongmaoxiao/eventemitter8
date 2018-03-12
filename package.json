@@ -1,16 +1,41 @@
 {
   "name": "eventemitter8",
   "version": "1.0.0",
-  "description": "eventemitter8",
-  "main": "index.js",
+  "description": "ES6 EventEmitter",
+  "main": "dist/eventemitter8.min.js",
+  "files": [
+    "dist/eventemitter8.min.js",
+    "umd"
+  ],
   "repository": "git@github.com:hongmaoxiao/EventEmitter.git",
+  "keywords": [
+    "EventEmitter",
+    "EventEmitter8",
+    "Events",
+    "addEventListener",
+    "addListener",
+    "emit",
+    "emits",
+    "emitter",
+    "event",
+    "once",
+    "publish",
+    "subscribe"
+  ],
   "author": "buaaxhm@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
-    "jest": "^22.4.2"
+    "jest": "^22.4.2",
+    "rollup": "^0.56.5",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.2.0",
+    "rollup-plugin-uglify": "^3.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rollup -c",
+    "prepublishOnly": "yarn run build"
   }
 }
