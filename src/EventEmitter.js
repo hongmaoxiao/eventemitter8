@@ -55,13 +55,13 @@ class EventEmitter {
     if (isNullOrUndefined(events)) return false;
 
     if (typeof events === 'function') {
-      events.call(events.context || null, rest);
+      events.apply(events.context || null, rest);
       if (events.once) {
         this.removeListener(type, events);
       }
     } else if (isArray(events)) {
       events.map(e => {
-        e.call(e.context || null, rest);
+        e.apply(e.context || null, rest);
         if (e.once) {
           this.removeListener(type, e);
         }
